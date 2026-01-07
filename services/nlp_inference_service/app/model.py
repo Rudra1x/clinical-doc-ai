@@ -1,37 +1,33 @@
 import torch
 from functools import lru_cache
-from transformers import AutoTokenizer
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from pathlib import Path
 
 from .icd_labels import NUM_LABELS
 
 MODEL_NAME = "dmis-lab/biobert-base-cased-v1.1"
-MODEL_PATH = Path(__file__).parent.parent / "models" / "biobert_icd.ckpt"
+MODEL_PATH = Path(__file__).parent.parent / "models" / "biobert_icd_weights.pt"
+
 
 @lru_cache()
 def load_model():
-    from pytorch_lightning import LightningModule
-    from transformers import AutoModelForSequenceClassification
+    if not MODEL_PATH.exists():
+        raise RuntimeError(
+            f"❌ Model weights not found at {MODEL_PATH}.\n"
+            f"Please run training first."
+        )
 
-    class BioBERTICDModel(LightningModule):
-        def __init__(self):
-            super().__init__()
-            self.model = AutoModelForSequenceClassification.from_pretrained(
-                MODEL_NAME,
-                num_labels=NUM_LABELS,
-                problem_type="multi_label_classification"
-            )
-
-        def forward(self, **inputs):
-            return self.model(**inputs)
-
-    model = BioBERTICDModel.load_from_checkpoint(
-        checkpoint_path=str(MODEL_PATH),
-        map_location="cpu"
+    model = AutoModelForSequenceClassification.from_pretrained(
+        MODEL_NAME,
+        num_labels=NUM_LABELS,
+        problem_type="multi_label_classification",
     )
 
-    model.eval()
+    state_dict = torch.load(MODEL_PATH, map_location="cpu")
+    model.load_state_dict(state_dict, strict=False)
 
+    model.eval()
     tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
 
+    print("Classifier weight mean:", model.classifier.weight.mean().item())
     return model, tokenizer
