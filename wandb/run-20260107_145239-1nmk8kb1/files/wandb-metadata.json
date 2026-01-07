@@ -1,0 +1,28 @@
+{
+  "os":  "Windows-10-10.0.26100-SP0",
+  "python":  "CPython 3.10.19",
+  "startedAt":  "2026-01-07T09:22:39.904877Z",
+  "program":  "D:\\QUANTUM COMPUTING\\Industry Projects\\Data Analysis and Data Science\\clinical-doc-ai\\mlops\\training\\train_biobert.py",
+  "codePath":  "mlops\\training\\train_biobert.py",
+  "codePathLocal":  "mlops\\training\\train_biobert.py",
+  "git":  {
+    "remote":  "https://github.com/Rudra1x/clinical-doc-ai.git",
+    "commit":  "1543ab52ebbb5b98f10e267a1d0c6c687db80110"
+  },
+  "email":  "ranup55novo@gmail.com",
+  "root":  "D:\\QUANTUM COMPUTING\\Industry Projects\\Data Analysis and Data Science\\clinical-doc-ai",
+  "host":  "Symantec",
+  "executable":  "C:\\Users\\ASUS\\miniconda3\\envs\\mlops310\\python.exe",
+  "cpu_count":  6,
+  "cpu_count_logical":  12,
+  "disk":  {
+    "/":  {
+      "total":  "314571747328",
+      "used":  "117286637568"
+    }
+  },
+  "memory":  {
+    "total":  "7949656064"
+  },
+  "writerId":  "bj2ym23m7ayrlbukn5x5xe3zgnsac526"
+}
