@@ -1,0 +1,16 @@
+version: "3.9"
+
+services:
+  ocr-service:
+    build: ../services/ocr_service
+    container_name: ocr_service
+    ports:
+      - "8000:8000"
+
+  nlp-service:
+    build: ../services/nlp_inference_service
+    container_name: nlp_inference_service
+    ports:
+      - "8001:8001"
+    depends_on:
+      - ocr-service
