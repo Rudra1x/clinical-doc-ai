@@ -1,0 +1,27 @@
+{
+  "os":  "Windows-10-10.0.26100-SP0",
+  "python":  "CPython 3.10.19",
+  "startedAt":  "2026-01-08T11:21:38.517936Z",
+  "program":  "D:\\QUANTUM COMPUTING\\Industry Projects\\Data Analysis and Data Science\\clinical-doc-ai\\mlops\\training\\train_ner.py",
+  "codePath":  "mlops\\training\\train_ner.py",
+  "codePathLocal":  "mlops\\training\\train_ner.py",
+  "git":  {
+    "remote":  "https://github.com/Rudra1x/clinical-doc-ai.git",
+    "commit":  "6ab945f8cd0d16a2fa2e08cf29eeaa2f04b49c1b"
+  },
+  "root":  "D:\\QUANTUM COMPUTING\\Industry Projects\\Data Analysis and Data Science\\clinical-doc-ai",
+  "host":  "Symantec",
+  "executable":  "C:\\Users\\ASUS\\miniconda3\\envs\\mlops310\\python.exe",
+  "cpu_count":  6,
+  "cpu_count_logical":  12,
+  "disk":  {
+    "/":  {
+      "total":  "314571747328",
+      "used":  "125520244736"
+    }
+  },
+  "memory":  {
+    "total":  "7949656064"
+  },
+  "writerId":  "ypj7r6z0anmo3j9fwu7nrhs181qm7m3b"
+}

@@ -4,7 +4,7 @@ from typing import List, Dict
 
 class InferenceRequest(BaseModel):
     document_text: str
-    explain:bool = False
+    explain: bool = False
 
 
 class ICDPrediction(BaseModel):
@@ -21,4 +21,9 @@ class TokenImportance(BaseModel):
 class InferenceResponse(BaseModel):
     summary: str
     icd_predictions: List[ICDPrediction]
-    entities: Dict[str, List[TokenImportance]]
+
+    # Explainability (ICD → token attributions)
+    explanations: Dict[str, List[TokenImportance]]
+
+    # NER (entity type → extracted strings)
+    ner_entities: Dict[str, List[str]]
