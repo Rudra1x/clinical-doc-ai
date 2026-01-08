@@ -4,6 +4,7 @@ from typing import List, Dict
 
 class InferenceRequest(BaseModel):
     document_text: str
+    explain:bool = False
 
 
 class ICDPrediction(BaseModel):

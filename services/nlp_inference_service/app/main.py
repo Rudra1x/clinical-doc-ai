@@ -23,7 +23,7 @@ def health_check():
 
 @app.post("/infer", response_model=InferenceResponse)
 def infer(request: InferenceRequest):
-    summary, icd_preds, entities = run_inference(request.document_text)
+    summary, icd_preds, entities = run_inference(request.document_text,explain=getattr(request, "explain", False))
 
     icd_objects = [
         ICDPrediction(**pred) for pred in icd_preds

@@ -38,6 +38,7 @@ def compute_token_attributions(model, tokenizer, text, target_label_idx):
     attributions, _ = ig.attribute(
         inputs=embeddings,
         baselines=baseline,
+        n_steps = 8,
         return_convergence_delta=True,
     )
 
