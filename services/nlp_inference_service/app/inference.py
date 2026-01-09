@@ -2,19 +2,38 @@ import torch
 from .model import load_model
 from .icd_labels import INDEX_TO_ICD
 from .explain import compute_token_attributions
+from .ner import run_ner
+from .context import has_diagnostic_context, symptom_based_icd
 
 THRESHOLD = 0.5
 
 
 def run_inference(text: str, explain: bool = False):
     """
-    Run ICD prediction.
-    Explainability is OPTIONAL and only computed for top-1 prediction.
+    Context-aware inference:
+    - Symptom-only input  → Symptom ICD codes (R / J codes)
+    - Diagnostic context → Disease ICD prediction (ML)
     """
+
+    # Step 1: Run NER first (always)
+    ner_entities = run_ner(text)
+
+    # Step 2: Context gate
+    if not has_diagnostic_context(text, ner_entities):
+        # Symptom-only case (clinically correct behavior)
+        symptom_codes = symptom_based_icd(text)
+
+        return (
+            "Symptoms detected. Diagnostic confirmation required for ICD-10 disease coding.",
+            symptom_codes,
+            {},               # no explainability
+            ner_entities,
+        )
+
+    # Step 3: Disease ICD prediction (ML path)
 
     model, tokenizer = load_model()
 
-    # Encode input
     encoding = tokenizer(
         text,
         truncation=True,
@@ -23,13 +42,11 @@ def run_inference(text: str, explain: bool = False):
         return_tensors="pt",
     )
 
-    # Forward pass (FAST)
     with torch.no_grad():
         outputs = model(**encoding)
         logits = outputs.logits
         probs = torch.sigmoid(logits).squeeze(0)
 
-    # ICD predictions
     icd_predictions = [
         {
             "code": INDEX_TO_ICD[idx],
@@ -40,7 +57,8 @@ def run_inference(text: str, explain: bool = False):
         if prob.item() >= THRESHOLD
     ]
 
-    # Explainability (OPTIONAL & TOP-1 ONLY)
+    # Step 4: Optional explainability (TOP-1 only)
+
     explanations = {}
 
     if explain and len(icd_predictions) > 0:
@@ -60,7 +78,6 @@ def run_inference(text: str, explain: bool = False):
             if token not in ["[PAD]", "[CLS]", "[SEP]"]
         ]
 
-    # Summary placeholder
-    summary = "Automated clinical summary generation coming next."
+    summary = "ICD-10 disease coding performed using diagnostic clinical context."
 
-    return summary, icd_predictions, explanations
+    return summary, icd_predictions, explanations, ner_entities
